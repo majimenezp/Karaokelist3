@@ -1,0 +1,17 @@
+<h1>Bienvenido a karaoke list</h1>
+<h2>Escribe el nombre de la cancion o grupo que quieres buscar:</h2>
+<form class="row g-3" action="/search" method="post">
+    <div class="mb-3">
+        <label for="ci_username" class="form-label">Nombre</label>
+        <input type="text" class="form-control" name="ci_username" id="ci_username"
+            placeholder="Nombre de quien la pide">
+    </div>
+    <div class="mb-3">
+        <label for="ci_search" class="form-label">Busqueda</label>
+        <input type="text" class="form-control" name="ci_search" id="ci_search"
+            placeholder="Nombre del cantante o cancion">
+    </div>
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary mb-3">Buscar</button>
+    </div>
+</form>
