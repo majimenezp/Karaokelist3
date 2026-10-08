@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KaraokeList · Proyector</title><link rel="stylesheet" href="/static/app.css"></head>
+<body class="viewer-page" data-role="projector">
+  <main class="viewer-stage" id="viewer-stage"><header><div><strong id="song-title">KaraokeList · Proyector</strong><small id="song-artist"></small></div><span id="player-status">Conectando…</span></header><p id="dedication" class="dedication-banner" hidden></p><p id="next-announcement" class="next-announcement" hidden></p><div class="canvas-area"><canvas id="cdg" width="288" height="192" aria-label="Letra de karaoke"></canvas></div><p id="message" class="viewer-message">Habilita el audio en esta pantalla y controla desde Admin.</p><div class="viewer-controls"><button id="enable-audio" class="button">Habilitar audio</button><button id="fullscreen" class="button secondary">Pantalla completa</button><a href="/admin">Admin</a></div><div id="projector-ticker" class="projector-ticker" hidden><div id="ticker-track" class="ticker-track"></div></div><audio id="audio" preload="auto"></audio></main>
+  <script src="/static/player.js"></script>
+</body></html>

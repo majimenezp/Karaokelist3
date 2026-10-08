@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KaraokeList · {{.Title}}</title><link rel="stylesheet" href="/static/app.css"></head>
+<body>
+  <header class="topbar"><a class="brand" href="/catalog">KaraokeList</a><nav><a href="/catalog">Catálogo</a><a class="{{if eq .Kind "artist"}}active{{end}}" href="/artists">Artistas</a><a class="{{if eq .Kind "genre"}}active{{end}}" href="/genres">Géneros</a><a href="/admin">Admin</a><a href="/projector">Proyector</a><a href="/catalog?profile=1">Cambiar nombre</a></nav></header>
+  <main class="container"><section class="hero"><p class="eyebrow">Índice · {{.Tracks}} canciones</p><h1>{{.Title}}</h1><p class="subtle">Elige una entrada para ver sus canciones.</p></section>
+    <section class="directory-grid">{{range .Items}}<a class="directory-card" href="/catalog?{{$.Kind}}={{urlquery .Value}}"><span>{{.Label}}</span><small>{{.Count}} canciones</small><b>→</b></a>{{else}}<div class="empty-state"><strong>Aún no hay canciones indexadas.</strong><span>Ejecuta el indexador desde Admin.</span><a class="button" href="/admin">Abrir Admin</a></div>{{end}}</section>
+    {{if eq .Kind "genre"}}{{if eq (len .Items) 1}}<p class="note">Los MP3 actuales no tienen tags de género; por eso aparecen agrupados como “Sin género”.</p>{{end}}{{end}}
+  </main>
+</body></html>

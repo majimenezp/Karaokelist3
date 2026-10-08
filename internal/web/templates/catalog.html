@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KaraokeList · Catálogo</title><link rel="stylesheet" href="/static/app.css"></head>
+<body>
+  <header class="topbar"><a class="brand" href="/catalog">KaraokeList</a><nav><a class="active" href="/catalog">Catálogo</a><a href="/artists">Artistas</a><a href="/genres">Géneros</a><a href="/greetings">Saludos</a><a href="/admin">Admin</a><a href="/projector">Proyector</a><button class="nav-action" id="change-name" type="button">Cambiar nombre</button></nav></header>
+  <main class="container">
+    <section class="hero"><p class="eyebrow">Tu biblioteca de karaoke</p><h1>Encuentra la siguiente canción</h1><p class="subtle">Busca por canción, artista, álbum o colección.</p></section>
+    {{if eq .Indexed 0}}<section class="empty-state"><strong>El catálogo todavía está vacío.</strong><span>Agrega tu carpeta de karaoke al iniciar y ejecuta la indexación desde Admin.</span><a class="button" href="/admin">Configurar catálogo</a></section>{{end}}
+    <form class="searchbar" action="/catalog" method="get"><input name="q" value="{{.Query}}" placeholder="Ej. artista o título" aria-label="Buscar canciones"><button class="button" type="submit">Buscar</button></form>
+    <div class="filterline">
+      {{if .Artist}}<a class="chip" href="/catalog?q={{urlquery .Query}}">Artista: {{if eq .Artist "__none"}}Sin artista{{else}}{{.Artist}}{{end}} ×</a>{{end}}
+      {{if .Genre}}<a class="chip" href="/catalog?q={{urlquery .Query}}">Género: {{if eq .Genre "__none"}}Sin género{{else}}{{.Genre}}{{end}} ×</a>{{end}}
+      <span class="result-count">{{.Total}} canciones · {{.Indexed}} en catálogo</span>
+    </div>
+    <p id="request-feedback" class="status" aria-live="polite"></p>
+    <section class="track-list">
+      {{range .Tracks}}<article class="track-card"><div class="track-icon">♫</div><div class="track-info"><h2>{{.Title}}</h2><p>{{if .Artist}}{{.Artist}}{{else}}Artista sin identificar{{end}}{{if .Album}} · {{.Album}}{{else if .Collection}} · {{.Collection}}{{end}}</p><div class="tags">{{if .Genre}}<a href="/catalog?genre={{urlquery .Genre}}">{{.Genre}}</a>{{else}}<a href="/catalog?genre=__none">Sin género</a>{{end}}<span>{{.DurationSeconds | printf "%.0f"}} s</span></div></div><button class="button request-song" data-track-id="{{.ID}}" data-title="{{.Title}}" data-artist="{{.Artist}}">Pedir</button></article>{{else}}{{if ne .Indexed 0}}<div class="empty-state"><strong>No encontré canciones con esos filtros.</strong><span>Prueba otra búsqueda o quita un filtro.</span></div>{{end}}{{end}}
+    </section>
+    {{if gt .Pages 1}}<div class="pagination">{{if gt .Page 1}}<a href="/catalog?q={{urlquery .Query}}&artist={{urlquery .Artist}}&genre={{urlquery .Genre}}&page={{dec .Page}}">Anterior</a>{{end}}<span>Página {{.Page}} de {{.Pages}}</span>{{if lt .Page .Pages}}<a href="/catalog?q={{urlquery .Query}}&artist={{urlquery .Artist}}&genre={{urlquery .Genre}}&page={{inc .Page}}">Siguiente</a>{{end}}</div>{{end}}
+    <aside class="facet-preview"><div><h3>Artistas</h3><p>{{len .Artists}} entradas</p><a href="/artists">Ver índice →</a></div><div><h3>Géneros</h3><p>{{len .Genres}} entradas</p><a href="/genres">Ver índice →</a></div></aside>
+  </main>
+  <dialog id="name-dialog" class="modal"><form id="name-form"><h2 id="name-dialog-title">¿Cómo te llamas?</h2><p class="subtle">Usaremos tu nombre para identificar tus pedidos y saludos.</p><input id="requester-name" maxlength="50" required autocomplete="name" placeholder="Tu nombre"><p class="status" id="name-error"></p><button class="button" type="submit">Guardar nombre</button></form></dialog>
+  <dialog id="request-dialog" class="modal"><form id="request-form"><h2 id="request-title">Pedir canción</h2><p class="subtle" id="request-artist"></p><label>Dedicatoria o saludo <textarea id="request-message" maxlength="280" rows="4" placeholder="Escribe un mensaje (opcional)"></textarea></label><p class="status" id="request-status"></p><div class="button-row"><button class="button" type="submit">Agregar a la lista</button><button class="button secondary" type="button" data-close-dialog>Cancelar</button></div></form></dialog>
+  <script src="/static/player.js"></script>
+</body></html>
